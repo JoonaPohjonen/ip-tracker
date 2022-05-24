@@ -40,7 +40,7 @@ function App() {
     }
 });
 
-  let apiKey = process.env.REACT_APP_API_KEY;
+  let apiKey = process.env.REACT_APP_API_KEY;                                           //API key is taken from the untracked .env file for safety
   const api = "https://geo.ipify.org/api/v1?apiKey="+apiKey+"&ipAddress="               //Geo API ilman IP osoitetta
 
   let gibeLocation = () => {
