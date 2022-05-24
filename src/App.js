@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
+import iconArrow from './images/icon-arrow.svg';
+import iconLocation from './images/icon-location.svg';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 function App() {
   const [ip, setIp] = useState("8.8.8.8");
@@ -55,9 +59,16 @@ function App() {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    window.L.marker([adressData.location.lat, adressData.location.lng])
+    let myIcon = window.L.icon({
+      iconUrl: iconLocation,
+      iconSize: [38, 47],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76]
+    })
+
+    window.L.marker([adressData.location.lat, adressData.location.lng], {icon: myIcon})
       .addTo(map)
-      .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
+      .bindPopup("Here is the searched location")
       .openPopup();
 
       console.log(ip)
@@ -71,16 +82,40 @@ function App() {
 
   return (
     <>
-      <div>
+      <HelmetProvider>
+        <Helmet>
+          <title>IP address tracker</title>
+        </Helmet>
+      </HelmetProvider>
+      <div id="upperHalf">
         <h1>IP Address Tracker</h1>
-        <div>
+        <div id="search">
           <input placeholder="IP here" value={ip} onChange={(e) => setIp(e.target.value)} type="text"></input>
-          <button onClick={gibeLocation}>nuoli</button>
+          <button onClick={gibeLocation}>
+            <img id="arrow" src={iconArrow} alt="arrow icon"/>
+          </button>
         </div>
-        <div>Osoitetiedot</div>
+        <div id="osoitetiedot">
+          <div id="ipInfoDivLeft">
+            <p className="infoOtsikko">IP ADDRESS</p>
+            <p className="infoSisalto">{adressData.ip}</p>
+          </div>
+          <div className="ipInfoDivMid">
+            <p className="infoOtsikko">LOCATION</p>
+            <p className="infoSisalto">{adressData.location.city}</p>
+            <p className="infoSisalto">{adressData.location.region} {adressData.location.postalCode}</p>
+          </div>
+          <div className="ipInfoDivMid">
+            <p className="infoOtsikko">TIMEZONE</p>
+            <p className="infoSisalto">{adressData.location.timezone}</p>
+          </div>
+          <div id="ipInfoDivRight">
+            <p className="infoOtsikko">ISP</p>
+            <p className="infoSisalto">{adressData.isp}</p>
+          </div>
+        </div>
       </div>
-      <div>Kartta</div>
-      <div id="map" style={{ height: "380px" }}></div>
+      <div id="map" style={{ height: "65vh" }}></div>
     </>
   );
 }
