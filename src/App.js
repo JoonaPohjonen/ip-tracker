@@ -40,7 +40,8 @@ function App() {
     }
 });
 
-  const api = "https://geo.ipify.org/api/v1?apiKey=at_MFlNbCjuwbS2vqK9o83w1H5UKlhVu&ipAddress="               //Geo API ilman IP osoitetta
+  let apiKey = process.env.REACT_APP_API_KEY;
+  const api = "https://geo.ipify.org/api/v1?apiKey="+apiKey+"&ipAddress="               //Geo API ilman IP osoitetta
 
   let gibeLocation = () => {
     fetch(
